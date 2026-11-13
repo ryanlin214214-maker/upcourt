@@ -74,7 +74,7 @@ The same production simulation completed an automated 3-on-3 match, 11–9 after
 Run the regression suite from this project directory with a Godot executable on your PATH.
 
 ```sh
-godot --headless --path . --script res://tests/match_checks.gd
+godot  --headless --path . --script res://tests/match_checks.gd
 ```
 
 ## Known limitations
