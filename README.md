@@ -6,12 +6,22 @@ A playable 3D basketball prototype built with Godot 4 and GDScript. Choose ficti
 
 ![Full-court exhibition gameplay](exhibition.png)
 
-[Download the Mac game](https://github.com/ryanlin214214-maker/upcourt/releases/latest) · [Download the complete Godot project](Upcourt-Godot-Project.zip)
+## Version 0.2.1
+
+Opponent steals and opponent pass interceptions are disabled in both modes. The human-controlled team can steal and intercept. CPU defense still contests shots, blocks, and rebounds.
+
+### Visual and handling upgrades from 0.2.0
+
+Added articulated knees, ankles, wrists, elbows, torso counter-rotation, head motion, defensive crouches, shooting follow-through, and passing poses. Player heights affect visual proportions. Models have shaped jerseys, facial features, hairstyle variation, fingers, shoe soles, and laces. Arena additions include spectators, tunnels, lighting structures, courtside benches, scorer monitors, bottles, and broadcast cameras.
+
+Ball handling now has three animated hand-switching paths. Press F/B for a crossover, C/right bumper for between the legs, or V/right-stick click for behind the back. Each move uses six stamina points and has a short cooldown. Higher handling ratings produce faster moves. Keep moving with the directional controls to create separation.
+
+[Download the latest Mac game and Godot project](https://github.com/ryanlin214214-maker/upcourt/releases/latest)
 
 ## Launch
 
-- **Mac app** — Extract `Upcourt-macOS.zip` and open `Upcourt.app`. The universal build supports Apple Silicon and Intel. It is ad-hoc signed for local use and has no Apple notarization. macOS may require approval through Privacy & Security on another Mac.
-- **Source** — Download and extract `Upcourt-Godot-Project.zip` from this repository. Open the `FullCourtGodot` folder and import `project.godot` in Godot 4.7.2 and press F6 on `scenes/main.tscn`, or F5 to run the project. The Compatibility renderer is selected. No third-party addons are required.
+- **Mac app** — Extract `Upcourt-v0.2.1-macOS.zip` and open `Upcourt.app`. The universal build supports Apple Silicon and Intel. It is ad-hoc signed for local use and has no Apple notarization. macOS may require approval through Privacy & Security on another Mac.
+- **Source** — Download and extract `Upcourt-Godot-Project.zip` from this repository or the versioned project ZIP from Releases. Import `project.godot` in Godot 4.7.2 and press F6 on `scenes/main.tscn`, or F5 to run the project. The Compatibility renderer is selected. No third-party addons are required.
 - **Export** — Install Godot 4.7.2 export templates in the editor, then use the included `macOS` export preset.
 
 ## Controls
@@ -26,7 +36,9 @@ Controller labels follow the Xbox layout. PlayStation Square corresponds to X he
 | Pass / request pass / steal | E | A |
 | Switch controlled player | Q | Left bumper |
 | Jump to block / rebound | R | Y |
-| Crossover | F | B |
+| Crossover / switch hand | F | B |
+| Between the legs | C | Right bumper |
+| Behind the back | V | Right stick click |
 | Pause / resume | Escape | Start |
 
 Aim a pass with your movement direction. Without a direction, the game favors an open teammate. If you control an off-ball teammate, Pass requests the ball. A selection ring identifies your player. Passing transfers control to the receiver.
@@ -39,13 +51,13 @@ Release in the green meter zone. Shooting and finishing ratings affect both the 
 
 **Full-court exhibition** has ten players, four selectable 1- or 2-minute quarters, 2s and 3s, a 24-second shot clock, automatic inbound passes after stoppages, transition offense and defense, halftime direction changes, and one-minute overtime periods until the tie is resolved. Offensive rebounds reset to 14 seconds. Pause to substitute a bench player for your currently selected home-team player. The score and game clock freeze while paused.
 
-Both modes include acceleration, sprint stamina, dribbling, crossovers, intended-receiver passing, pass interceptions, switching, timed jump shots and layups, blocks, loose balls and rebounds, score feedback, pause, and rematch. AI uses the same movement, passing, shooting, and defense methods. Teammates space and cut, defenders track assignments and close out. Difficulty changes CPU release precision, while ratings remain the basis of the shot calculation.
+Both modes include acceleration, sprint stamina, dribbling, crossovers, intended-receiver passing, pass interceptions, switching, timed jump shots and layups, blocks, loose balls and rebounds, score feedback, pause, and rematch. AI uses the shared movement, passing, and shooting methods, with opponent steals disabled. Teammates space and cut, defenders track assignments and close out. Difficulty changes CPU release precision, while ratings remain the basis of the shot calculation.
 
 Four fictional teams each have six players. **Rosters / Create player** edits names, numbers, heights, and seven ratings or adds a player to the bench. Changes persist locally. Newly created bench players can enter through substitutions.
 
 ## Roster format and authorized assets
 
-Inside the extracted project, `data/rosters.json` contains a `schema_version` and `teams` array. Each team has a unique `id`, `city`, `name`, `abbr`, hexadecimal `color` and `trim`, optional `logo_path`, and a `players` array. Each player has a unique team-local `id`, `name`, jersey `number`, `height` in metres, optional `model_path`, and nested `ratings` for `speed`, `shooting`, `finishing`, `defense`, `passing`, `handling`, and `rebounding`.
+`data/rosters.json` contains a `schema_version` and `teams` array. Each team has a unique `id`, `city`, `name`, `abbr`, hexadecimal `color` and `trim`, optional `logo_path`, and a `players` array. Each player has a unique team-local `id`, `name`, jersey `number`, `height` in metres, optional `model_path`, and nested `ratings` for `speed`, `shooting`, `finishing`, `defense`, `passing`, `handling`, and `rebounding`.
 
 Ratings range from 25 to 99. Teams need at least six players. Names and colors are consumed directly by the game. `logo_path` and `model_path` are reserved extension fields for local authorized assets under `res://assets/` or `user://assets/`; the current renderer uses procedural jerseys and players, so custom logo/model rendering requires wiring those fields into the renderer.
 
@@ -55,9 +67,9 @@ Edits save atomically to `user://rosters.json`, which overrides the bundled defa
 
 Tested with Godot 4.7.2 on Apple Silicon macOS using native OpenGL rendering and headless simulation. The native scene, menu, half court, full court, and roster editor were launched and visually inspected.
 
-The included integration suite passed 46 checks covering movement, sprint stamina, dribble attachment, shot timing/rating/distance/contest effects, layups, intended passing, one-time basket counting, possession changes, blocks, rebounds, clearing, out-of-bounds, rematch, inbounding, shot-clock expiry, quarter transitions, pause/resume, substitutions, and simulated controller shot events.
+The included integration suite passed 72 checks covering movement, sprint stamina, dribble attachment, shot timing/rating/distance/contest effects, layups, intended passing, one-time basket counting, possession changes, blocks, rebounds, clearing, out-of-bounds, rematch, inbounding, shot-clock expiry, quarter transitions, pause/resume, substitutions, disabled opponent steals/interceptions, retained human-team steals, and simulated controller shot events.
 
-The same production simulation completed an automated 3-on-3 match, 8–11 after approximately 154 simulated seconds, and a four-quarter 5-on-5 match, 10–14. These are automated matches, not a claim of a human playthrough. Local roster persistence and validation were checked separately.
+The same production simulation completed an automated 3-on-3 match, 11–9 after approximately 656 simulated seconds, and a four-quarter 5-on-5 match, 12–6. These are automated matches, not a claim of a human playthrough. Local roster persistence and validation were checked separately.
 
 Run the regression suite from this project directory with a Godot executable on your PATH.
 
